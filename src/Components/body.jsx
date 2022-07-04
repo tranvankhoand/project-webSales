@@ -26,6 +26,7 @@ const Body = ({data , handleClick}) => {
         return  curData.name === value
       })
       setData(result)
+      // vi du thay doi code o day chang han
   }
   const handleSort = () => {
     // const result = datas.sort((a,b) => 
