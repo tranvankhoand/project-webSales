@@ -4,8 +4,37 @@ import Body from './body';
 import Footer from './footer';
 import { Link } from 'react-router-dom';
 import Cart from './cart';
-
+import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
+import { app } from '../utils/firebase.config';
+import { async } from '@firebase/util';
+import { useStateValue } from '../context/StateProvider';
+import { actionType } from '../context/reducer';
+import Avatar from '../assets/img/Avatar.png'
 const Index = () => {
+  const firebaseAuth = getAuth(app)
+  const provider = new GoogleAuthProvider()
+
+  const [{ user }, dispatch] = useStateValue()
+  const [isMenu, setIsMenu] = useState(false)
+  const login = async () => {
+    if (!user) {
+      const { user: { refreshToken, providerData } } = await signInWithPopup(firebaseAuth, provider)
+      dispatch({
+        type: actionType.SET_USER,
+        user: providerData[0]
+      })
+    } else {
+      setIsMenu(!isMenu)
+    }
+  }
+  const logOut = () => {
+    setIsMenu(false)
+    localStorage.clear()
+    dispatch({
+      type: actionType.SET_USER,
+      user: null
+    })
+  }
   const [shows, setShows] = useState(true)
   const [cart, setCart] = useState([])
   const handleClick = (data) => {
@@ -19,6 +48,8 @@ const Index = () => {
     if (arr[ind].amount === 0) arr[ind].amount = 1
     setCart([...arr])
   }
+
+
   return (
     <div className='app'>
       <header className="header">
@@ -101,7 +132,7 @@ const Index = () => {
                       <a href="#" className="header__notify-link">
                         <div className="header__notify-info">
                           <span className="header__notify-name">
-                          SURFACE LAPTOP 3 (15-INCH) | AMD RYZEN 5 / RAM 8GB / SSD 128GB
+                            SURFACE LAPTOP 3 (15-INCH) | AMD RYZEN 5 / RAM 8GB / SSD 128GB
                           </span>
                           <span className="header__notify-decription">
                             Đánh giá Máy tính SURFACE LAPTOP 3 (15-INCH) | AMD RYZEN 5 / RAM 8GB / SSD 128GB
@@ -120,10 +151,10 @@ const Index = () => {
                       <a href="#" className="header__notify-link">
                         <div className="header__notify-info">
                           <span className="header__notify-name">
-                          Laptop Asus Gaming TUF FX506HC-HN144W (i5 11400H/8GB RAM/512GB SSD/15.6 FHD 144hz/RTX 3050 4GB/Win11/Đen)
+                            Laptop Asus Gaming TUF FX506HC-HN144W (i5 11400H/8GB RAM/512GB SSD/15.6 FHD 144hz/RTX 3050 4GB/Win11/Đen)
                           </span>
                           <span className="header__notify-decription">
-                          Laptop Asus Gaming TUF FX506HC-HN144W (i5 11400H/8GB RAM/512GB SSD/15.6 FHD 144hz/RTX 3050 4GB/Win11/Đen)
+                            Laptop Asus Gaming TUF FX506HC-HN144W (i5 11400H/8GB RAM/512GB SSD/15.6 FHD 144hz/RTX 3050 4GB/Win11/Đen)
                           </span>
                         </div>
                       </a>
@@ -139,10 +170,10 @@ const Index = () => {
                       <a href="#" className="header__notify-link">
                         <div className="header__notify-info">
                           <span className="header__notify-name">
-                          Laptop HP ProBook 450 G8 (51X27PA) (i5 1135G7/8GB RAM/256GB SSD/15.6 FHD/Win/Bạc)
+                            Laptop HP ProBook 450 G8 (51X27PA) (i5 1135G7/8GB RAM/256GB SSD/15.6 FHD/Win/Bạc)
                           </span>
                           <span className="header__notify-decription">
-                          Laptop HP ProBook 450 G8 (51X27PA) (i5 1135G7/8GB RAM/256GB SSD/15.6 FHD/Win/Bạc)
+                            Laptop HP ProBook 450 G8 (51X27PA) (i5 1135G7/8GB RAM/256GB SSD/15.6 FHD/Win/Bạc)
                           </span>
                         </div>
                       </a>
@@ -163,46 +194,54 @@ const Index = () => {
               </li>
               <li className="header__navbar-item padding-left-8px">
                 <i className="ti-world"></i>
-                <a href="#" className="header__navbar-item-link">
-                  Tiếng Việt
+                <Link to="/contact" className="header__navbar-item-link">
+                  Liên hệ
                   <i className="header__navbar-item-icon ti-angle-down"></i>
-                </a>
+                </Link>
               </li>
               <li className="header__navbar-item padding-left-8px">
                 <a href="#" className="header__navbar-item-link border-right-2px">
                   Đăng ký
                 </a>
               </li>
-              <li className="header__navbar-item">
-                <Link
-                  to='/login'
-                  className="header__navbar-item-link padding-left-8px"
+              <li className="header__navbar-item" onClick={login}>
+                <a className="header__navbar-item-link padding-left-8px" style={{marginTop:'8px'}}
                 > Đăng nhập
-                </Link>
-              </li>
-              <li className="header__navbar-item header__navbar-user">
+                </a>
+              
+              
                 <img
-                  src="https://upload.wikimedia.org/wikipedia/commons/thumb/1/12/User_icon_2.svg/640px-User_icon_2.svg.png"
-                  alt=""
+                  src={user ? user.photoURL : Avatar}
+                  alt="Avatar"
                   className="header__navbar-user-img"
                 />
-                <span className="header__navbar-user-name">Trần Văn Khoa</span>
+                
+                {
+                  isMenu && (
 
-                <ul className="header__navbar-user-menu">
-                  <li className="header__navbar-user-item">
-                    <a href="#">Tài khoản của tôi</a>
-                  </li>
-                  <li className="header__navbar-user-item">
-                    <a href="#">Địa chỉ của tôi</a>
-                  </li>
-                  <li className="header__navbar-user-item">
-                    <a href="#">Bên mua</a>
-                  </li>
-                  <li className="header__navbar-user-item">
-                    <a href="#">Đăng xuất</a>
-                  </li>
-                </ul>
-              </li>
+                    <ul className="header__navbar-user-menu">
+                      {
+                        user && user.email === 'dokhoapa@gmail.com' && (
+                          <Link style={{ textDecoration: 'none' }} to={'/'}>
+                            <li className="header__navbar-user-item" >
+                              <a style={{ color: '#333' }} href="#">Tài khoản của tôi</a>
+                            </li>
+                          </Link>
+                        )
+                      }
+                      <li className="header__navbar-user-item">
+                        <a href="#">Địa chỉ của tôi</a>
+                      </li>
+                      <li className="header__navbar-user-item">
+                        <a href="#">Bên mua</a>
+                      </li>
+                      <li onClick={logOut} className="header__navbar-user-item">
+                        <a href="#">Đăng xuất</a>
+                      </li>
+                    </ul>
+                  )
+                }
+                </li>
             </ul>
           </nav>
           <Header setShows={setShows} size={cart.length} />
@@ -237,47 +276,47 @@ const Index = () => {
           <ul className="mobile-category__list">
             <li className="mobile-category__item">
               <a href="" className="mobile-category__link">
-                Dụng cụ thiết bị tiện ích
+                laptop
               </a>
             </li>
             <li className="mobile-category__item">
               <a href="" className="mobile-category__link">
-                Thiết bị điện gia dụng
+                mobile
               </a>
             </li>
             <li className="mobile-category__item">
               <a href="" className="mobile-category__link">
-                Đồ dùng phòng bếp
+                tablet
               </a>
             </li>
             <li className="mobile-category__item">
               <a href="" className="mobile-category__link">
-                Dụng cụ thiết bị tiện ích
+                laptop
               </a>
             </li>
             <li className="mobile-category__item">
               <a href="" className="mobile-category__link">
-                Thiết bị điện gia dụng
+                mobile
               </a>
             </li>
             <li className="mobile-category__item">
               <a href="" className="mobile-category__link">
-                Đồ dùng phòng bếp
+                tablet
               </a>
             </li>
             <li className="mobile-category__item">
               <a href="" className="mobile-category__link">
-                Dụng cụ thiết bị tiện ích
+                laptop
               </a>
             </li>
             <li className="mobile-category__item">
               <a href="" className="mobile-category__link">
-                Thiết bị điện gia dụng
+                mobile
               </a>
             </li>
             <li className="mobile-category__item">
               <a href="" className="mobile-category__link">
-                Đồ dùng phòng bếp
+                tablet
               </a>
             </li>
           </ul>

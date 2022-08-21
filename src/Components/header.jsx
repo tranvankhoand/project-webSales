@@ -18,6 +18,8 @@ const Header = ({setShows,size}) => {
 
     setItem(item);
   };
+
+  
   return (
     <div>     
           <div className="header__with-search">
@@ -41,7 +43,7 @@ const Header = ({setShows,size}) => {
             </div>
             <div className="header__logo hide-on-tablet" onClick={() => setShows(true)}>
               <a href="/" className="header__logo-link">
-                <img src="https://hanoicomputercdn.com/media/lib/19-02-2022/logo-hacomtrangch.png"/>
+                <img src="  "/>
               </a>
             </div>
             <input
@@ -105,7 +107,8 @@ const Header = ({setShows,size}) => {
             <div className="header__cart">
               <div className="header__cart-wrap" >
                 
-                <i className="header__cart-icon fa-solid fa-cart-shopping"
+                <i className=" fa-solid fa-cart-shopping"
+                style={{fontSize:'30px',color:'var(--white-color)'}}
                 onClick={() => setShows(false)}>
                   
                 </i>

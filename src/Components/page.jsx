@@ -15,10 +15,10 @@ const Page = ({ userPerPage, setCurrentPage, totalUsers }) => {
 
       {
         pageNumbers.map((number, index) =>
-          <div key={index} >
-            <li
-              className="pagination-item pagination-item__active" onClick={() => setCurrentPage(number)}>
-              <a className="pagination-item__link">
+          <div key={index} style={{border:'1px solid #ccc' , margin: '0 10px',backgroundColor:'#f94646' }}>
+            <li 
+              className="pagination-item pagination-item__active"  onClick={() => setCurrentPage(number)}>
+              <a className="paginatioan-item__link" style={{textDecoration : 'none', color : '#000'}}>
                 {number}
               </a>
             </li>

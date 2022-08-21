@@ -26,7 +26,6 @@ const Body = ({data , handleClick}) => {
         return  curData.name === value
       })
       setData(result)
-      // vi du thay doi code o day chang han
   }
   const handleSort = () => {
     // const result = datas.sort((a,b) => 
@@ -100,9 +99,7 @@ const Body = ({data , handleClick}) => {
                 </div>
 
                 <div className="home-filter__page">
-                  <span className="home-filter__page-num">
-                    <span className="home-filter__page-current">1</span>/10
-                  </span>
+                  
 
                   <div className="home-filter__page-control border-shadow--bottom">
                     <a
@@ -162,7 +159,7 @@ const Body = ({data , handleClick}) => {
                             </div>
                             <button className="home-product-item__sold"
                             onClick={() => handleClick(data)}>
-                              Add to card
+                              Buy
                             </button>
                           </div>
 
