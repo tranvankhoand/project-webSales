@@ -43,7 +43,7 @@ const Header = ({setShows,size}) => {
             </div>
             <div className="header__logo hide-on-tablet" onClick={() => setShows(true)}>
               <a href="/" className="header__logo-link">
-                <img src="  "/>
+                <img src=" https://hanoicomputercdn.com/media/lib/19-02-2022/logo-hacomtrangch.png"/>
               </a>
             </div>
             <input
